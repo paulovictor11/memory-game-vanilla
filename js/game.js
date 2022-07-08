@@ -1,4 +1,6 @@
 const grid = document.querySelector(".grid");
+const spanPlayer = document.querySelector(".player");
+const timer = document.querySelector(".timer");
 
 const characters = [
     "beth",
@@ -27,7 +29,10 @@ const checkEndGame = () => {
     const disabledCards = document.querySelectorAll(".disable-card");
 
     if (disabledCards.length === 20) {
-        alert("Parabéns, você conseguiu!!");
+        clearInterval(this.loop);
+        alert(
+            `Parabéns, ${spanPlayer.innerHTML}! Seu tempo foi: ${timer.innerHTML} segundos`
+        );
     }
 };
 
@@ -55,7 +60,7 @@ const checkCards = () => {
 };
 
 const revealCard = ({ target }) => {
-    if (target.parentNode.className.includes("reveal.card")) {
+    if (target.parentNode.className.includes("reveal-card")) {
         return;
     }
 
@@ -96,4 +101,16 @@ const loadGame = () => {
     });
 };
 
-loadGame();
+const startTimer = () => {
+    this.loop = setInterval(() => {
+        const currentTime = +timer.innerHTML; // convert string to number
+        timer.innerHTML = currentTime + 1;
+    }, 1000);
+};
+
+window.onload = () => {
+    spanPlayer.innerHTML = localStorage.getItem("player");
+
+    startTimer();
+    loadGame();
+};
